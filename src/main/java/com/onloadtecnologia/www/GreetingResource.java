@@ -42,6 +42,7 @@ public class GreetingResource {
     @POST
     @Transactional
     public Cliente salvarCliente(Cliente cliente) {
+        repository.persist(cliente);
         if (repository.isPersistent(cliente)) {
             return cliente;
         } else {

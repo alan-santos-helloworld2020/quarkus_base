@@ -1,12 +1,11 @@
 package com.onloadtecnologia.www.Controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
 
-import javax.annotation.security.PermitAll;
+import java.util.Arrays;
+import java.util.HashSet;
+
+
+
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -23,7 +22,7 @@ import org.eclipse.microprofile.jwt.Claims;
 
 import io.smallrye.jwt.build.Jwt;
 
-@Path("/user")
+@Path("user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserController {
@@ -50,8 +49,8 @@ public class UserController {
         String token = null;
         if(!userlogin.isEmpty()){
         token = Jwt.issuer(issuer)
-                            .upn(user.getEmail())
-                            .groups(new HashSet<>(Arrays.asList("Admin")))
+                            .upn("jdoe@quarkus.io")
+                            .groups(new HashSet<>(Arrays.asList("User")))
                             .claim(Claims.full_name.name(), userlogin.get().getNome() )
                             .claim(Claims.email.name(), userlogin.get().getEmail())
                             .sign();

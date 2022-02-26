@@ -1,6 +1,9 @@
 package com.onloadtecnologia.www;
 
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -14,19 +17,28 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+
 import com.onloadtecnologia.www.Models.Cliente;
 import com.onloadtecnologia.www.Repository.ClienteRepository;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
+
 import java.util.List;
 
-@Path("/clientes")
+@Path("clientes")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class GreetingResource {
 
     @Inject
     ClienteRepository repository;
+    @Inject
+    JsonWebToken jwt;
 
     @GET
+    @Path("/")
+    @RolesAllowed("User")
     public List<Cliente> listarClientes() {
         List<Cliente> clientes = repository.listAll();
         return clientes;
@@ -34,6 +46,7 @@ public class GreetingResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed("User")
     public Cliente pesquisarClientes(@PathParam("id") Long id) {
         var clientes = repository.findById(id);
         return clientes;
@@ -74,4 +87,6 @@ public class GreetingResource {
         repository.delete(del);
         return del;
     }
+
+
 }
